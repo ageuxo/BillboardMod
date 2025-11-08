@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_18",
+  "refmap": "billboard_models.refmap.json",
+  "package": "org.ageuxo.billboardmodels.mixins",
+  "mixins": [
+  ],
+  "minVersion": "0.8"
+}
