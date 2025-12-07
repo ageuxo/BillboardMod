@@ -1,0 +1,64 @@
+package org.ageuxo.billboardmodels.model;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import org.ageuxo.billboardmodels.ClientHelper;
+import org.ageuxo.billboardmodels.capability.IBillboardRenderStore;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class BillboardRenderer implements ResourceManagerReloadListener {
+    public static final BillboardRenderer INSTANCE = new BillboardRenderer();
+
+    private static final Quaternionf ROT = new Quaternionf();
+    private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
+
+    public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Quaternionf camRot, IBillboardRenderStore.BillboardRender billboard, Level level) {
+        var pos = billboard.pos();
+        var state = billboard.state();
+        int light = LevelRenderer.getLightColor(level, billboard.pos());
+        poseStack.pushPose();
+        Vec3 randomOffset = state.getOffset(level, pos);
+        poseStack.translate(0.5f + randomOffset.x, 0f + randomOffset.y, 0.5f + randomOffset.z);
+        ROT.set(camRot);
+        // Do rotation stuff here
+        poseStack.mulPose(ROT);
+        poseStack.translate(0, 0.5f, 0);
+        renderSprite(buf, poseStack, SPRITE_CACHE.computeIfAbsent(state, ClientHelper::getParticleSprite), light, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
+
+    }
+
+    public static void renderSprite(VertexConsumer buf, PoseStack poseStack, TextureAtlasSprite sprite, int packedLight, int packOverlay) {
+        addVert(poseStack.last(), buf, -0.5f, 0.5f, 0, sprite.getU0(), sprite.getV0(), packedLight, packOverlay);
+        addVert(poseStack.last(), buf, 0.5f, 0.5f, 0, sprite.getU1(), sprite.getV0(), packedLight, packOverlay);
+        addVert(poseStack.last(), buf, 0.5f, -0.5f, 0, sprite.getU1(), sprite.getV1(), packedLight, packOverlay);
+        addVert(poseStack.last(), buf, -0.5f, -0.5f, 0, sprite.getU0(), sprite.getV1(), packedLight, packOverlay);
+    }
+
+    private static void addVert(PoseStack.Pose pose, VertexConsumer buf, float x, float y, int z, float u, float v, int packedLight, int packOverlay) {
+        buf.vertex(pose.pose(), x, y, z)
+                .color(1f, 1f, 1f, 1f)
+                .uv(u, v)
+                .uv2(packedLight)
+                .overlayCoords(packOverlay)
+                .normal(pose.normal(), 0, 0, 1)
+                .endVertex();
+    }
+
+    @Override
+    public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
+        SPRITE_CACHE.clear();
+    }
+}

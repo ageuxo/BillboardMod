@@ -4,7 +4,12 @@
   "refmap": "billboard_models.refmap.json",
   "package": "org.ageuxo.billboardmodels.mixins",
   "mixins": [
-    "MixinFlowerBlock"
+    "LevelRendererAccessor",
+    "MixinFlowerBlock",
+    "RenderChunkInfoAccessor"
   ],
-  "minVersion": "0.8"
+  "minVersion": "0.8",
+  "client": [
+    "MixinChunkRenderDispatcherRebuildTask"
+  ]
 }

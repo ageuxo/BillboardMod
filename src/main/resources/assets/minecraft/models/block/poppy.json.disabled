@@ -1,0 +1,13 @@
+{
+  "loader": "billboard_models:billboard",
+  "textures": {
+    "particle": "minecraft:block/poppy"
+  },
+  "sprites": [
+    {
+      "texture": "particle",
+      "center": [0, 0, 0],
+      "radius": 1
+    }
+  ]
+}

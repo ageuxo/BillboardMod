@@ -54,6 +54,7 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
             baker.uv(sprite.getU0(), sprite.getV0());
             baker.uv2((int) sprite.getU1(), (int) sprite.getV1());
 
+
             quads.add(baker.getQuad());
         }
 

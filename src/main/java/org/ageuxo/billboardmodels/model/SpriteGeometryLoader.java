@@ -7,6 +7,9 @@ import net.minecraft.util.GsonHelper;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 
 public class SpriteGeometryLoader implements IGeometryLoader<SpriteGeometry> {
+
+    public static final SpriteGeometryLoader INSTANCE = new SpriteGeometryLoader();
+
     @Override
     public SpriteGeometry read(JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
 
