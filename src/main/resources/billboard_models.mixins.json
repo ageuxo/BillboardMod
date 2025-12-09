@@ -5,7 +5,6 @@
   "package": "org.ageuxo.billboardmodels.mixins",
   "mixins": [
     "LevelRendererAccessor",
-    "MixinFlowerBlock",
     "MixinLevelChunk",
     "RenderChunkInfoAccessor"
   ],

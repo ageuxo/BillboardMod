@@ -15,7 +15,6 @@ public class BillboardModels {
     public BillboardModels() {
         FMLJavaModLoadingContext context = FMLJavaModLoadingContext.get();
         IEventBus bus = context.getModEventBus();
-        BlockEntities.TYPES.register(bus);
     }
 
     public static ResourceLocation modRL(String path) {
