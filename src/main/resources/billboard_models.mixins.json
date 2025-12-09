@@ -6,6 +6,7 @@
   "mixins": [
     "LevelRendererAccessor",
     "MixinFlowerBlock",
+    "MixinLevelChunk",
     "RenderChunkInfoAccessor"
   ],
   "minVersion": "0.8",

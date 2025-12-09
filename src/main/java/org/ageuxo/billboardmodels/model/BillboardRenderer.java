@@ -2,6 +2,7 @@ package org.ageuxo.billboardmodels.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.ageuxo.billboardmodels.ClientHelper;
-import org.ageuxo.billboardmodels.capability.IBillboardRenderStore;
+import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
@@ -24,13 +25,19 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     private static final Quaternionf ROT = new Quaternionf();
     private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
 
-    public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Quaternionf camRot, IBillboardRenderStore.BillboardRender billboard, Level level) {
+    public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, IBillboardRenderStore.BillboardRender billboard, Level level) {
         var pos = billboard.pos();
         var state = billboard.state();
+        var camRot = cam.rotation();
+        var camPos = cam.getPosition();
         int light = LevelRenderer.getLightColor(level, billboard.pos());
-        poseStack.pushPose();
+        double worldOffsetX = pos.getX() - camPos.x();
+        double worldOffsetY = pos.getY() - camPos.y();
+        double worldOffsetZ = pos.getZ() - camPos.z();
         Vec3 randomOffset = state.getOffset(level, pos);
-        poseStack.translate(0.5f + randomOffset.x, 0f + randomOffset.y, 0.5f + randomOffset.z);
+
+        poseStack.pushPose();
+        poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
         ROT.set(camRot);
         // Do rotation stuff here
         poseStack.mulPose(ROT);

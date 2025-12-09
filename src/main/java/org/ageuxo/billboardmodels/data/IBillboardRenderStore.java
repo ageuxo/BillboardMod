@@ -1,4 +1,4 @@
-package org.ageuxo.billboardmodels.capability;
+package org.ageuxo.billboardmodels.data;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,8 +20,8 @@ public interface IBillboardRenderStore {
     Capability<IBillboardRenderStore> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() { });
 
     List<BillboardRender> getBillboardRenders();
-    void addBillboardRender(BillboardRender billboard);
-    void clear();
+    boolean addBillboardRender(BillboardRender billboard);
+    void clearBillboardRenders();
 
     class Provider implements ICapabilityProvider {
 

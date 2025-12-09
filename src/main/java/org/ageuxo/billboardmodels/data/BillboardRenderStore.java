@@ -1,4 +1,4 @@
-package org.ageuxo.billboardmodels.capability;
+package org.ageuxo.billboardmodels.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ public class BillboardRenderStore implements IBillboardRenderStore {
     }
 
     @Override
-    public synchronized void addBillboardRender(BillboardRender billboard) {
-        this.billboardRenders.add(billboard);
+    public synchronized boolean addBillboardRender(BillboardRender billboard) {
+        return this.billboardRenders.add(billboard);
     }
 
     @Override
-    public synchronized void clear() {
+    public synchronized void clearBillboardRenders() {
         this.billboardRenders.clear();
     }
 }

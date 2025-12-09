@@ -8,7 +8,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.ageuxo.billboardmodels.capability.IBillboardRenderStore;
+import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.datagen.Tags;
 
 import java.util.concurrent.CompletableFuture;
