@@ -1,5 +1,0 @@
-{
-  "net/minecraft/world/level/block/FlowerBlock": [
-    "org/ageuxo/billboardmodels/be/BillboardBEInjection"
-  ]
-}

@@ -30,7 +30,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 legacyForge {
 
-    interfaceInjectionData = files("interfaces.json")
+//    interfaceInjectionData = files("interfaces.json")
 
     // Specify the version of MinecraftForge to use.
     version = project.minecraft_version + '-' + project.forge_version
