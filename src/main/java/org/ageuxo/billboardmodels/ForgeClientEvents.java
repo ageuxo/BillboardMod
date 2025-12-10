@@ -22,7 +22,7 @@ import org.ageuxo.billboardmodels.model.BillboardRenderer;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = BillboardModels.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = BillboardMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeClientEvents {
 
     @SubscribeEvent

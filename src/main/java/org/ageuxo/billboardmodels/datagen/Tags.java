@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.ageuxo.billboardmodels.BillboardModels;
+import org.ageuxo.billboardmodels.BillboardMod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,10 +18,10 @@ public class Tags {
 
     public static class BlockTags extends BlockTagsProvider {
 
-        public static final TagKey<Block> BILLBOARD_RENDER = new TagKey<>(Registries.BLOCK, BillboardModels.modRL("billboard_render"));
+        public static final TagKey<Block> BILLBOARD_RENDER = new TagKey<>(Registries.BLOCK, BillboardMod.modRL("billboard_render"));
 
         public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-            super(output, lookupProvider, BillboardModels.MODID, existingFileHelper);
+            super(output, lookupProvider, BillboardMod.MODID, existingFileHelper);
         }
 
         @Override

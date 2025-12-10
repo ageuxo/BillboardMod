@@ -13,7 +13,7 @@ import org.ageuxo.billboardmodels.datagen.Tags;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = BillboardModels.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = BillboardMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModCommonEvents {
 
     @SubscribeEvent
