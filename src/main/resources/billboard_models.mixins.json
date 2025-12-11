@@ -7,9 +7,10 @@
   ],
   "minVersion": "0.8",
   "client": [
-    "MixinLevelChunk",
     "LevelRendererAccessor",
-    "RenderChunkInfoAccessor",
-    "MixinChunkRenderDispatcherRebuildTask"
+    "MixinChunkRenderDispatcherCompiledChunk",
+    "MixinChunkRenderDispatcherCompileResults",
+    "MixinChunkRenderDispatcherRebuildTask",
+    "RenderChunkInfoAccessor"
   ]
 }

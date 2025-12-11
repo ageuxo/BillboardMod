@@ -11,5 +11,11 @@ public interface IBillboardRenderStore {
     boolean addBillboardRender(BillboardRender billboard);
     void clearBillboardRenders();
 
+    void replaceBillboards(List<BillboardRender> replacementBillboards);
+
+    default void replaceFrom(IBillboardRenderStore other) {
+        replaceBillboards(other.getBillboardRenders());
+    }
+
     record BillboardRender(BlockPos pos, BlockState state) { }
 }

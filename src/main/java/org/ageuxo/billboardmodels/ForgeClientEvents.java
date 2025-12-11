@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -37,16 +37,12 @@ public class ForgeClientEvents {
             VertexConsumer buf = bufferSource.getBuffer(RenderType.cutout());
 
             if (level != null && !renderChunksInFrustum.isEmpty()) {
-
                 for (LevelRenderer.RenderChunkInfo chunkInfo : renderChunksInFrustum) {
-                    BlockPos origin = ((RenderChunkInfoAccessor) chunkInfo).getChunk().getOrigin();
-//                    if (minecraft.player != null && minecraft.player.position().distanceTo(origin.getCenter()) < 45)
-                        if (level.getChunk(origin) instanceof IBillboardRenderStore chunk) {
-                            List<IBillboardRenderStore.BillboardRender> billboards = chunk.getBillboardRenders();
-                            for (IBillboardRenderStore.BillboardRender billboard : billboards) {
-                                BillboardRenderer.renderBillboard(poseStack, buf, camera, billboard, level);
-                            }
-                        }
+                    ChunkRenderDispatcher.RenderChunk renderChunk = ((RenderChunkInfoAccessor) chunkInfo).getChunk();
+                    List<IBillboardRenderStore.BillboardRender> billboards = ((IBillboardRenderStore)renderChunk.getCompiledChunk()).getBillboardRenders();
+                    for (IBillboardRenderStore.BillboardRender billboard : billboards) {
+                        BillboardRenderer.renderBillboard(poseStack, buf, camera, billboard, level);
+                    }
                 }
             }
         }

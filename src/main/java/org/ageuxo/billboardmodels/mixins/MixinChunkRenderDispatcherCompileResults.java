@@ -1,6 +1,6 @@
 package org.ageuxo.billboardmodels.mixins;
 
-import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import org.ageuxo.billboardmodels.data.BillboardRenderStore;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.List;
 
-@Mixin(LevelChunk.class)
-public class MixinLevelChunk implements IBillboardRenderStore {
+@Mixin(ChunkRenderDispatcher.RenderChunk.RebuildTask.CompileResults.class)
+public class MixinChunkRenderDispatcherCompileResults implements IBillboardRenderStore {
 
     @Unique
     private final BillboardRenderStore billboardMod$billboardRenderStore = new BillboardRenderStore();
@@ -34,4 +34,12 @@ public class MixinLevelChunk implements IBillboardRenderStore {
     public void clearBillboardRenders() {
         billboardMod$billboardRenderStore.clearBillboardRenders();
     }
+
+    @SuppressWarnings("AddedMixinMembersNamePattern")
+    @Override
+    public void replaceBillboards(List<BillboardRender> replacementBillboards) {
+        billboardMod$billboardRenderStore.replaceBillboards(replacementBillboards);
+    }
+
+
 }

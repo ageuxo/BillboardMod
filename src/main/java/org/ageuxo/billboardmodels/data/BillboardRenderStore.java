@@ -24,4 +24,10 @@ public class BillboardRenderStore implements IBillboardRenderStore {
     public synchronized void clearBillboardRenders() {
         this.billboardRenders.clear();
     }
+
+    @Override
+    public synchronized void replaceBillboards(List<BillboardRender> replacementBillboards) {
+        clearBillboardRenders();
+        getBillboardRenders().addAll(replacementBillboards);
+    }
 }
