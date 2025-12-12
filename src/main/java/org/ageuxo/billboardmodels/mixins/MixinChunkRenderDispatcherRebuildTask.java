@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.datagen.Tags;
@@ -24,6 +25,16 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
             ((IBillboardRenderStore) compileResults).addBillboardRender(new IBillboardRenderStore.BillboardRender(pos.immutable(), state));
         }
         return state;
+    }
+
+    @WrapOperation(method = "compile",
+    at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    public RenderShape compileMakeBillboardInvisible(BlockState state, Operation<RenderShape> original) {
+        if (state.is(Tags.BlockTags.BILLBOARD_RENDER)) {
+            return RenderShape.INVISIBLE;
+        }
+
+        return original.call(state);
     }
 
     @ModifyExpressionValue(method = "doTask",
