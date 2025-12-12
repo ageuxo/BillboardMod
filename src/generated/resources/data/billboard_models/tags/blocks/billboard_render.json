@@ -1,6 +1,6 @@
 {
   "values": [
-    "minecraft:poppy",
-    "minecraft:tall_grass"
+    "minecraft:dead_bush",
+    "#minecraft:small_flowers"
   ]
 }

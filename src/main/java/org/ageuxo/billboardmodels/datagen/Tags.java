@@ -27,8 +27,8 @@ public class Tags {
         @Override
         protected void addTags(HolderLookup.@NotNull Provider provider) {
             tag(BlockTags.BILLBOARD_RENDER)
-                    .add(Blocks.POPPY)
-                    .add(Blocks.TALL_GRASS);
+                    .add(Blocks.DEAD_BUSH)
+                    .addTag(net.minecraft.tags.BlockTags.SMALL_FLOWERS);
         }
     }
 }
