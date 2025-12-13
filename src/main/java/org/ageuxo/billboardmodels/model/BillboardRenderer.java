@@ -3,7 +3,6 @@ package org.ageuxo.billboardmodels.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.ageuxo.billboardmodels.ClientHelper;
-import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
+import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
@@ -27,7 +26,7 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     private static final Quaternionf ROT = new Quaternionf();
     private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
 
-    public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, IBillboardRenderStore.BillboardRender billboard, Level level) {
+    public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, BillboardPlacement billboard, Level level) {
         var pos = billboard.pos();
         var state = billboard.state();
         var camRot = cam.rotation();

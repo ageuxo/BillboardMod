@@ -1,6 +1,7 @@
 package org.ageuxo.billboardmodels.mixins;
 
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
+import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.BillboardRenderStore;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,14 +18,14 @@ public class MixinChunkRenderDispatcherCompileResults implements IBillboardRende
     @SuppressWarnings("AddedMixinMembersNamePattern")
     @Unique
     @Override
-    public List<BillboardRender> getBillboardRenders() {
+    public List<BillboardPlacement> getBillboardRenders() {
         return billboardMod$billboardRenderStore.getBillboardRenders();
     }
 
     @SuppressWarnings("AddedMixinMembersNamePattern")
     @Unique
     @Override
-    public boolean addBillboardRender(BillboardRender billboard) {
+    public boolean addBillboardRender(BillboardPlacement billboard) {
         return billboardMod$billboardRenderStore.addBillboardRender(billboard);
     }
 
@@ -37,7 +38,7 @@ public class MixinChunkRenderDispatcherCompileResults implements IBillboardRende
 
     @SuppressWarnings("AddedMixinMembersNamePattern")
     @Override
-    public void replaceBillboards(List<BillboardRender> replacementBillboards) {
+    public void replaceBillboards(List<BillboardPlacement> replacementBillboards) {
         billboardMod$billboardRenderStore.replaceBillboards(replacementBillboards);
     }
 

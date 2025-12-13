@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.mixins.LevelRendererAccessor;
 import org.ageuxo.billboardmodels.mixins.RenderChunkInfoAccessor;
@@ -39,8 +40,8 @@ public class ForgeClientEvents {
             if (level != null && !renderChunksInFrustum.isEmpty()) {
                 for (LevelRenderer.RenderChunkInfo chunkInfo : renderChunksInFrustum) {
                     ChunkRenderDispatcher.RenderChunk renderChunk = ((RenderChunkInfoAccessor) chunkInfo).getChunk();
-                    List<IBillboardRenderStore.BillboardRender> billboards = ((IBillboardRenderStore)renderChunk.getCompiledChunk()).getBillboardRenders();
-                    for (IBillboardRenderStore.BillboardRender billboard : billboards) {
+                    List<BillboardPlacement> billboards = ((IBillboardRenderStore)renderChunk.getCompiledChunk()).getBillboardRenders();
+                    for (BillboardPlacement billboard : billboards) {
                         BillboardRenderer.renderBillboard(poseStack, buf, camera, billboard, level);
                     }
                 }

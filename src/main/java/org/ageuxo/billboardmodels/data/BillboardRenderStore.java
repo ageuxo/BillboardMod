@@ -5,28 +5,28 @@ import java.util.List;
 
 public class BillboardRenderStore implements IBillboardRenderStore {
 
-    private final List<BillboardRender> billboardRenders = new ArrayList<>();
+    private final List<BillboardPlacement> billboardPlacements = new ArrayList<>();
 
     public BillboardRenderStore() {
     }
 
     @Override
-    public synchronized List<BillboardRender> getBillboardRenders() {
-        return billboardRenders;
+    public synchronized List<BillboardPlacement> getBillboardRenders() {
+        return billboardPlacements;
     }
 
     @Override
-    public synchronized boolean addBillboardRender(BillboardRender billboard) {
-        return this.billboardRenders.add(billboard);
+    public synchronized boolean addBillboardRender(BillboardPlacement billboard) {
+        return this.billboardPlacements.add(billboard);
     }
 
     @Override
     public synchronized void clearBillboardRenders() {
-        this.billboardRenders.clear();
+        this.billboardPlacements.clear();
     }
 
     @Override
-    public synchronized void replaceBillboards(List<BillboardRender> replacementBillboards) {
+    public synchronized void replaceBillboards(List<BillboardPlacement> replacementBillboards) {
         clearBillboardRenders();
         getBillboardRenders().addAll(replacementBillboards);
     }

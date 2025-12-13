@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.datagen.Tags;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,7 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
     public BlockState compileAddBillboard(RenderChunkRegion instance, BlockPos pos, Operation<BlockState> original, @Local ChunkRenderDispatcher.RenderChunk.RebuildTask.CompileResults compileResults) {
         BlockState state = original.call(instance, pos);
         if (state.is(Tags.BlockTags.BILLBOARD_RENDER)) {
-            ((IBillboardRenderStore) compileResults).addBillboardRender(new IBillboardRenderStore.BillboardRender(pos.immutable(), state));
+            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state));
         }
         return state;
     }
