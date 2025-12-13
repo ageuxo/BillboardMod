@@ -14,8 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.ageuxo.billboardmodels.ClientHelper;
 import org.ageuxo.billboardmodels.data.BillboardPlacement;
+import org.ageuxo.billboardmodels.data.BillboardTransform;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,17 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     public static final BillboardRenderer INSTANCE = new BillboardRenderer();
 
     private static final Quaternionf ROT = new Quaternionf();
+    private static final Vector3f VEC = new Vector3f();
     private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
+
+    public static final BillboardTransform CAMERA_RELATIVE = PoseStack::mulPose;
+    public static final BillboardTransform Y_UP = ((poseStack, camRot) -> {
+        camRot.getEulerAnglesXYZ(VEC);
+        VEC.y = 0;
+        ROT.set(VEC.x, VEC.y, VEC.z, 0);
+        ROT.normalize();
+        poseStack.mulPose(ROT);
+    });
 
     public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, BillboardPlacement billboard, Level level) {
         var pos = billboard.pos();
@@ -39,9 +51,8 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
 
         poseStack.pushPose();
         poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
-        ROT.set(camRot);
         // Do rotation stuff here
-        poseStack.mulPose(ROT);
+        billboard.transform().transform(poseStack, camRot);
         poseStack.translate(0, 0.5f, 0);
         renderSprite(buf, poseStack, SPRITE_CACHE.computeIfAbsent(state, ClientHelper::getParticleSprite), light, OverlayTexture.NO_OVERLAY, 1, 1, 1);
         poseStack.popPose();

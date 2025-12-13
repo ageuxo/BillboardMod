@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.datagen.Tags;
+import org.ageuxo.billboardmodels.model.BillboardRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -23,7 +24,7 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
     public BlockState compileAddBillboard(RenderChunkRegion instance, BlockPos pos, Operation<BlockState> original, @Local ChunkRenderDispatcher.RenderChunk.RebuildTask.CompileResults compileResults) {
         BlockState state = original.call(instance, pos);
         if (state.is(Tags.BlockTags.BILLBOARD_RENDER)) {
-            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state));
+            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.CAMERA_RELATIVE));
         }
         return state;
     }
