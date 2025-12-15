@@ -17,7 +17,6 @@ import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.BillboardTransform;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,22 +25,22 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     public static final BillboardRenderer INSTANCE = new BillboardRenderer();
 
     private static final Quaternionf ROT = new Quaternionf();
-    private static final Vector3f VEC = new Vector3f();
     private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
 
-    public static final BillboardTransform CAMERA_RELATIVE = PoseStack::mulPose;
-    public static final BillboardTransform Y_UP = ((poseStack, camRot) -> {
-        camRot.getEulerAnglesXYZ(VEC);
-        VEC.y = 0;
-        ROT.set(VEC.x, VEC.y, VEC.z, 0);
-        ROT.normalize();
+    public static final BillboardTransform CAMERA_RELATIVE = (poseStack, camera) -> {
+        poseStack.translate(0, -0.5f, 0);
+        poseStack.mulPose(camera.rotation());
+        poseStack.translate(0, 0.5f, 0);
+    };
+    public static final BillboardTransform Y_AXIS_ALIGNED = ((poseStack, camera) -> {
+        var camRot = camera.rotation();
+        ROT.set(0, camRot.y, 0, camRot.w);
         poseStack.mulPose(ROT);
     });
 
     public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, BillboardPlacement billboard, Level level) {
         var pos = billboard.pos();
         var state = billboard.state();
-        var camRot = cam.rotation();
         var camPos = cam.getPosition();
         int light = LevelRenderer.getLightColor(level, billboard.pos());
         double worldOffsetX = pos.getX() - camPos.x();
@@ -50,10 +49,10 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
         Vec3 randomOffset = state.getOffset(level, pos);
 
         poseStack.pushPose();
-        poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
+        // Have the center of rotation be the bottom of the block
+        poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0.5f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
         // Do rotation stuff here
-        billboard.transform().transform(poseStack, camRot);
-        poseStack.translate(0, 0.5f, 0);
+        billboard.transform().transform(poseStack, cam);
         renderSprite(buf, poseStack, SPRITE_CACHE.computeIfAbsent(state, ClientHelper::getParticleSprite), light, OverlayTexture.NO_OVERLAY, 1, 1, 1);
         poseStack.popPose();
 

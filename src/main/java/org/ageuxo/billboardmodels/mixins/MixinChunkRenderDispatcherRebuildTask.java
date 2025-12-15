@@ -26,7 +26,7 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
         if (state.is(Tags.BlockTags.BILLBOARD_SIMPLE)) {
             ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.CAMERA_RELATIVE));
         } else if (state.is(Tags.BlockTags.BILLBOARD_Y_UP)) {
-            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.Y_UP));
+            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.Y_AXIS_ALIGNED));
         }
         return state;
     }
