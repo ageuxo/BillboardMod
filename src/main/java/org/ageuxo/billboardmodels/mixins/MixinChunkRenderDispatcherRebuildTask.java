@@ -23,8 +23,10 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0))
     public BlockState compileAddBillboard(RenderChunkRegion instance, BlockPos pos, Operation<BlockState> original, @Local ChunkRenderDispatcher.RenderChunk.RebuildTask.CompileResults compileResults) {
         BlockState state = original.call(instance, pos);
-        if (state.is(Tags.BlockTags.BILLBOARD_RENDER)) {
+        if (state.is(Tags.BlockTags.BILLBOARD_SIMPLE)) {
             ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.CAMERA_RELATIVE));
+        } else if (state.is(Tags.BlockTags.BILLBOARD_Y_UP)) {
+            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.Y_UP));
         }
         return state;
     }
@@ -32,7 +34,7 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
     @WrapOperation(method = "compile",
     at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     public RenderShape compileMakeBillboardInvisible(BlockState state, Operation<RenderShape> original) {
-        if (state.is(Tags.BlockTags.BILLBOARD_RENDER)) {
+        if (state.is(Tags.BlockTags.BILLBOARDS)) {
             return RenderShape.INVISIBLE;
         }
 
