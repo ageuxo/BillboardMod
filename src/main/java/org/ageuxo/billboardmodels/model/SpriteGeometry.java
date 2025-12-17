@@ -3,6 +3,7 @@ package org.ageuxo.billboardmodels.model;
 import com.mojang.math.Transformation;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -10,18 +11,16 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
-import org.joml.Vector3f;
+import org.joml.Vector2f;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
-public record SpriteGeometry(List<Sprite> sprites) implements IUnbakedGeometry<SpriteGeometry> {
-
-    public static final Codec<SpriteGeometry> CODEC = Sprite.CODEC.listOf().xmap(SpriteGeometry::new, SpriteGeometry::sprites);
+public record SpriteGeometry(List<Sprite> sprites, Map<String, String> textures) implements IUnbakedGeometry<SpriteGeometry> {
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
@@ -36,19 +35,28 @@ public record SpriteGeometry(List<Sprite> sprites) implements IUnbakedGeometry<S
                 .map(
                         s -> new BillboardSpriteModel.BakedSprite(
                                 spriteGetter.apply(context.getMaterial(s.texture)),
-                                s.center,
-                                s.radius
+                                s.origin,
+                                s.offset,
+                                s.tintIndex
                         )
                 ).toList();
 
         return new BillboardSpriteModel(bakedSprites, particle, overrides, context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(), ItemTransforms.NO_TRANSFORMS);
     }
 
-    public record Sprite(String texture, Vector3f center, float radius) {
+    public record Sprite(String texture, Vector2f origin, Vector2f offset, int tintIndex) {
+        public static final Codec<Vector2f> VEC2F = Codec.FLOAT.listOf().comapFlatMap(
+                (floatList) -> Util.fixedSize(floatList, 2).map(
+                                (floats) -> new Vector2f(floats.get(0), floats.get(1))
+                        ),
+                (vec) -> List.of(vec.x(), vec.y())
+        );
+
         public static final Codec<Sprite> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("texture").forGetter(Sprite::texture),
-                ExtraCodecs.VECTOR3F.fieldOf("center").forGetter(Sprite::center),
-                Codec.FLOAT.fieldOf("radius").forGetter(Sprite::radius)
+                VEC2F.fieldOf("origin").forGetter(Sprite::origin),
+                VEC2F.fieldOf("offset").forGetter(Sprite::offset),
+                Codec.INT.optionalFieldOf("tintindex", -1).forGetter(Sprite::tintIndex)
         ).apply(instance, Sprite::new));
     }
 }

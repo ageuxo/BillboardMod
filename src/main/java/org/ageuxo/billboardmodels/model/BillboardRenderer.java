@@ -3,6 +3,8 @@ package org.ageuxo.billboardmodels.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -20,12 +22,17 @@ import org.joml.Quaternionf;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class BillboardRenderer implements ResourceManagerReloadListener {
     public static final BillboardRenderer INSTANCE = new BillboardRenderer();
 
     private static final Quaternionf ROT = new Quaternionf();
     private static final Map<BlockState, TextureAtlasSprite> SPRITE_CACHE = new HashMap<>();
+    private static final Map<BlockState, Optional<BillboardSpriteModel>> MODEL_CACHE = new HashMap<>();
+
+    private BillboardRenderer() {
+    }
 
     public static final BillboardTransform CAMERA_RELATIVE = (poseStack, camera) -> {
         poseStack.translate(0, -0.5f, 0);
@@ -39,6 +46,7 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     });
 
     public static void renderBillboard(PoseStack poseStack, VertexConsumer buf, Camera cam, BillboardPlacement billboard, Level level) {
+        BlockColors blockColors = Minecraft.getInstance().getBlockColors();
         var pos = billboard.pos();
         var state = billboard.state();
         var camPos = cam.getPosition();
@@ -49,11 +57,32 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
         Vec3 randomOffset = state.getOffset(level, pos);
 
         poseStack.pushPose();
-        // Have the center of rotation be the bottom of the block
-        poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0.5f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
-        // Do rotation stuff here
-        billboard.transform().transform(poseStack, cam);
-        renderSprite(buf, poseStack, SPRITE_CACHE.computeIfAbsent(state, ClientHelper::getParticleSprite), light, OverlayTexture.NO_OVERLAY, 1, 1, 1);
+
+        Optional<BillboardSpriteModel> modelOptional = MODEL_CACHE.computeIfAbsent(state, ClientHelper::getBillboardModel);
+        if (modelOptional.isPresent()) { // Has billboard model
+            BillboardSpriteModel model = modelOptional.get();
+            for (BillboardSpriteModel.BakedSprite sprite : model.bakedSprites()) {
+                poseStack.pushPose();
+
+                poseStack.translate(-sprite.originX(), -sprite.originY(), 0);
+                billboard.transform().transform(poseStack, cam);
+                poseStack.translate(sprite.originX() + sprite.offsetX(), sprite.originY() + sprite.offsetY(), 0);
+
+                if (sprite.tinted()) {
+                    int tint = blockColors.getColor(state, level, pos, sprite.tintIndex());
+                    renderSprite(buf, poseStack, sprite.sprite(), light, OverlayTexture.NO_OVERLAY, tint);
+                } else {
+                    renderSprite(buf, poseStack, sprite.sprite(), light, OverlayTexture.NO_OVERLAY, 255, 255, 255);
+                }
+                poseStack.popPose();
+            }
+        } else {
+            // Have the center of rotation be the bottom of the block
+            poseStack.translate(0.5f + randomOffset.x + worldOffsetX, 0.5f + randomOffset.y + worldOffsetY, 0.5f + randomOffset.z + worldOffsetZ);
+            // Do rotation stuff here
+            billboard.transform().transform(poseStack, cam);
+            renderSprite(buf, poseStack, SPRITE_CACHE.computeIfAbsent(state, ClientHelper::getParticleSprite), light, OverlayTexture.NO_OVERLAY, 255, 255, 255);
+        }
         poseStack.popPose();
 
     }
@@ -73,9 +102,9 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
         addVert(poseStack.last(), buf, -0.5f, -0.5f, 0, sprite.getU0(), sprite.getV1(), packedLight, packOverlay, red, green, blue);
     }
 
-    private static void addVert(PoseStack.Pose pose, VertexConsumer buf, float x, float y, int z, float u, float v, int packedLight, int packOverlay, float red, float green, float blue) {
+    private static void addVert(PoseStack.Pose pose, VertexConsumer buf, float x, float y, int z, float u, float v, int packedLight, int packOverlay, int red, int green, int blue) {
         buf.vertex(pose.pose(), x, y, z)
-                .color(red, green, blue, 1f)
+                .color(red, green, blue, 255)
                 .uv(u, v)
                 .uv2(packedLight)
                 .overlayCoords(packOverlay)
@@ -86,5 +115,6 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
         SPRITE_CACHE.clear();
+        MODEL_CACHE.clear();
     }
 }

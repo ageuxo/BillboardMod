@@ -10,55 +10,37 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import org.joml.Vector2f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
 
 @ParametersAreNonnullByDefault
 public class BillboardSpriteModel implements IDynamicBakedModel {
 
     private final List<BakedSprite> bakedSprites;
-    private final TextureAtlasSprite sprite;
+    private final TextureAtlasSprite particle;
     private final ItemOverrides overrides;
     private final boolean hasAmbientOcclusion;
     private final boolean usesBlockLight;
     private final boolean isGui3d;
     private final ItemTransforms transforms;
-    private final QuadBakingVertexConsumer.Buffered baker;
 
-    public BillboardSpriteModel(List<BakedSprite> bakedSprites, TextureAtlasSprite sprite, ItemOverrides overrides, boolean hasAmbientOcclusion, boolean usesBlockLight, boolean isGui3d, ItemTransforms transforms) {
+    public BillboardSpriteModel(List<BakedSprite> bakedSprites, TextureAtlasSprite particle, ItemOverrides overrides, boolean hasAmbientOcclusion, boolean usesBlockLight, boolean isGui3d, ItemTransforms transforms) {
         this.bakedSprites = bakedSprites;
-        this.sprite = sprite;
+        this.particle = particle;
         this.overrides = overrides;
         this.hasAmbientOcclusion = hasAmbientOcclusion;
         this.usesBlockLight = usesBlockLight;
         this.isGui3d = isGui3d;
         this.transforms = transforms;
-        this.baker = new QuadBakingVertexConsumer.Buffered();
-        baker.setTintIndex(0);
-        baker.setShade(false);
     }
 
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-        List<BakedQuad> quads = new ArrayList<>();
-
-        for (var bakedSprite : this.bakedSprites) {
-            TextureAtlasSprite sprite = bakedSprite.sprite();
-            baker.setSprite(sprite);
-            baker.uv(sprite.getU0(), sprite.getV0());
-            baker.uv2((int) sprite.getU1(), (int) sprite.getV1());
-
-
-            quads.add(baker.getQuad());
-        }
-
-        return quads;
+        return List.of();
     }
 
     @Override
@@ -83,7 +65,7 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
 
     @Override
     public @NotNull TextureAtlasSprite getParticleIcon() {
-        return sprite;
+        return particle;
     }
 
     @Override
@@ -97,5 +79,62 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
         return transforms;
     }
 
-    public record BakedSprite(TextureAtlasSprite sprite, Vector3f center, float radius) { }
+    public List<BakedSprite> bakedSprites() {
+        return bakedSprites;
+    }
+
+    public static final class BakedSprite {
+        private final TextureAtlasSprite sprite;
+        private final float[] floats;
+        private final int tintIndex;
+        private final boolean tinted;
+
+        public BakedSprite(TextureAtlasSprite sprite, float[] floats, int tintIndex, boolean tinted) {
+            this.sprite = sprite;
+            this.floats = floats;
+            this.tintIndex = tintIndex;
+            this.tinted = tinted;
+        }
+
+        public BakedSprite(TextureAtlasSprite sprite, float[] floats, int tintIndex) {
+            this(sprite, floats, tintIndex, tintIndex > 0);
+        }
+
+        public BakedSprite(TextureAtlasSprite sprite, Vector2f origin, Vector2f offset, int tintIndex) {
+            this(sprite, new float[]{origin.x, origin.y, offset.x, offset.y}, tintIndex);
+        }
+
+        public float originX() {
+            return floats[0];
+        }
+
+        public float originY() {
+            return floats[1];
+        }
+
+        public float offsetX() {
+            return floats[2];
+        }
+
+        public float offsetY() {
+            return floats[3];
+        }
+
+        public TextureAtlasSprite sprite() {
+            return sprite;
+        }
+
+        public float[] floats() {
+            return floats;
+        }
+
+        public int tintIndex() {
+            return tintIndex;
+        }
+
+        public boolean tinted() {
+            return tinted;
+        }
+
+    }
 }
