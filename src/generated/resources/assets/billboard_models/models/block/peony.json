@@ -1,0 +1,32 @@
+{
+  "loader": "billboard_models:billboard",
+  "sprites": [
+    {
+      "offset": [
+        0.0,
+        1.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "0"
+    },
+    {
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "1"
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/peony_top",
+    "1": "minecraft:block/peony_bottom",
+    "particle": "minecraft:block/peony_bottom"
+  }
+}

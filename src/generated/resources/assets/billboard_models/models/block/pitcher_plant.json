@@ -1,0 +1,32 @@
+{
+  "loader": "billboard_models:billboard",
+  "sprites": [
+    {
+      "offset": [
+        0.0,
+        1.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "0"
+    },
+    {
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "1"
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/pitcher_crop_top_stage_4",
+    "1": "minecraft:block/pitcher_crop_bottom_stage_4",
+    "particle": "minecraft:block/pitcher_crop_bottom_stage_4"
+  }
+}

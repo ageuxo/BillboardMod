@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "billboard_models:block/pitcher_plant"
+    },
+    "half=upper": {
+      "model": "billboard_models:block/pitcher_plant_top"
+    }
+  }
+}

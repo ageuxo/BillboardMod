@@ -1,5 +1,7 @@
 {
   "loader": "billboard_models:billboard",
   "sprites": [],
-  "textures": {}
+  "textures": {
+    "particle": "minecraft:block/tall_grass_bottom"
+  }
 }

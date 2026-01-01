@@ -2,6 +2,6 @@
   "loader": "billboard_models:billboard",
   "sprites": [],
   "textures": {
-    "particle": "minecraft:block/large_fern_bottom"
+    "particle": "minecraft:block/pitcher_crop_bottom_stage_4"
   }
 }

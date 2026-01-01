@@ -25,13 +25,48 @@ public class ModelProvider extends BlockStateProvider {
         replaceDoubleTall(Blocks.TALL_GRASS,
                 doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass")),
                 "tall_grass",
-                vanillaRL("block/tall_grass")
+                vanillaRL("block/tall_grass_bottom")
         );
         
         replaceDoubleTall(Blocks.LARGE_FERN,
                 doubleTallTintedBillboard("large_fern", vanillaRL("block/large_fern")),
                 "large_fern",
-                vanillaRL("block/large_fern")
+                vanillaRL("block/large_fern_bottom")
+        );
+
+        replaceDoubleTall(Blocks.ROSE_BUSH,
+                doubleTallBillboard("rose_bush", vanillaRL("block/rose_bush_top"), vanillaRL("block/rose_bush_bottom")),
+                "rose_bush",
+                vanillaRL("block/rose_bush_bottom")
+        );
+
+        replaceDoubleTall(Blocks.LILAC,
+                doubleTallBillboard("lilac", vanillaRL("block/lilac_top"), vanillaRL("block/lilac_bottom")),
+                "lilac",
+                vanillaRL("block/lilac_bottom")
+        );
+
+        replaceDoubleTall(Blocks.PEONY,
+                doubleTallBillboard("peony", vanillaRL("block/peony_top"), vanillaRL("block/peony_bottom")),
+                "peony",
+                vanillaRL("block/peony_bottom")
+        );
+
+        replaceDoubleTall(Blocks.PITCHER_PLANT,
+                doubleTallBillboard("pitcher_plant", vanillaRL("block/pitcher_crop_top_stage_4"), vanillaRL("block/pitcher_crop_bottom_stage_4")),
+                "pitcher_plant",
+                vanillaRL("block/pitcher_crop_bottom_stage_4")
+        );
+
+        replaceDoubleTall(Blocks.SUNFLOWER,
+                billboard("sunflower")
+                        .addSprite(vanillaRL("block/sunflower_top"), 0.5f, 0.5f, 0f, 1f)
+                        .addSprite(vanillaRL("block/sunflower_front"), 0.5f, 0.5f, 0f, 1f)
+                        .addSprite(vanillaRL("block/sunflower_bottom"), 0.5f, 0.5f, 0f, 0f)
+                        .addParticleTexture(vanillaRL("block/sunflower_bottom"))
+                        .end(),
+                "sunflower",
+                vanillaRL("block/sunflower_bottom")
         );
 
     }
