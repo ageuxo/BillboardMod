@@ -97,7 +97,7 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
         }
 
         public BakedSprite(TextureAtlasSprite sprite, float[] floats, int tintIndex) {
-            this(sprite, floats, tintIndex, tintIndex > 0);
+            this(sprite, floats, tintIndex, tintIndex >= 0);
         }
 
         public BakedSprite(TextureAtlasSprite sprite, Vector2f origin, Vector2f offset, int tintIndex) {
