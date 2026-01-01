@@ -9,6 +9,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
+import org.ageuxo.billboardmodels.datagen.ModelProvider;
 import org.ageuxo.billboardmodels.datagen.Tags;
 
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +31,9 @@ public class ModCommonEvents {
 
         generator.addProvider(event.includeClient(),
                 new Tags.BlockTags(output, provider, fileHelper)
+        );
+        generator.addProvider(event.includeClient(),
+                new ModelProvider(output, fileHelper)
         );
 
     }

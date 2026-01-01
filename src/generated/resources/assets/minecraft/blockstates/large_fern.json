@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "billboard_models:block/large_fern"
+    },
+    "half=upper": {
+      "model": "billboard_models:block/large_fern_top"
+    }
+  }
+}
