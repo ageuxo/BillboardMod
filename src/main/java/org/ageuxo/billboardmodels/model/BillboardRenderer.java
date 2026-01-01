@@ -2,15 +2,17 @@ package org.ageuxo.billboardmodels.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.logging.LogUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -23,8 +25,10 @@ import org.joml.Quaternionf;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-public class BillboardRenderer implements ResourceManagerReloadListener {
+public class BillboardRenderer implements PreparableReloadListener {
     public static final BillboardRenderer INSTANCE = new BillboardRenderer();
 
     private static final Quaternionf ROT = new Quaternionf();
@@ -64,9 +68,9 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
             for (BillboardSpriteModel.BakedSprite sprite : model.bakedSprites()) {
                 poseStack.pushPose();
 
-                poseStack.translate(-sprite.originX(), -sprite.originY(), 0);
+                poseStack.translate(sprite.originX() + randomOffset.x + worldOffsetX, 0.5f + randomOffset.y + worldOffsetY, sprite.originY() + randomOffset.z + worldOffsetZ);
                 billboard.transform().transform(poseStack, cam);
-                poseStack.translate(sprite.originX() + sprite.offsetX(), sprite.originY() + sprite.offsetY(), 0);
+                poseStack.translate(sprite.offsetX(), sprite.offsetY(), 0);
 
                 if (sprite.tinted()) {
                     int tint = blockColors.getColor(state, level, pos, sprite.tintIndex());
@@ -113,8 +117,19 @@ public class BillboardRenderer implements ResourceManagerReloadListener {
     }
 
     @Override
-    public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
+    public @NotNull CompletableFuture<Void> reload(@NotNull PreparationBarrier preparationBarrier, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller preparationsProfiler, @NotNull ProfilerFiller reloadProfiler, @NotNull Executor backgroundExecutor, @NotNull Executor gameExecutor) {
+        return preparationBarrier.wait(clearCaches());
+    }
+
+    private static Void clearCaches() {
         SPRITE_CACHE.clear();
         MODEL_CACHE.clear();
+        LogUtils.getLogger().info("Cleared caches");
+        return null;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BillboardRenderer";
     }
 }

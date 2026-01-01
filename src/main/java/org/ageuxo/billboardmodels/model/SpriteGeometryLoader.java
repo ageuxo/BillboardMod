@@ -1,8 +1,8 @@
 package org.ageuxo.billboardmodels.model;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import org.slf4j.Logger;
@@ -17,22 +17,12 @@ public class SpriteGeometryLoader implements IGeometryLoader<SpriteGeometry> {
 
     @Override
     public SpriteGeometry read(JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
-        Map<String, String> textures = readTextures(jsonObject);
-        var spriteResult = SpriteGeometry.Sprite.CODEC.listOf().parse(JsonOps.INSTANCE, jsonObject);
+        Map<String, String> textures = Codec.unboundedMap(Codec.STRING, Codec.STRING).parse(JsonOps.INSTANCE, jsonObject.get("textures")).getOrThrow(true, LOGGER::warn);
+        var spriteResult = SpriteGeometry.Sprite.CODEC.listOf().parse(JsonOps.INSTANCE, jsonObject.get("sprites"));
         List<SpriteGeometry.Sprite> sprites = spriteResult.resultOrPartial(s ->LOGGER.warn("SpriteGeometryLoader failed parsing sprites: {}", s))
                 .orElseThrow( ()-> new JsonParseException("SpriteGeometryLoader failed parsing sprites") );
 
         return new SpriteGeometry(sprites, textures);
     }
 
-    public static Map<String, String> readTextures(JsonObject json) {
-        JsonObject textureObj = json.getAsJsonObject("textures");
-        ImmutableMap.Builder<String, String> mapBuilder = ImmutableMap.builder();
-        for (Map.Entry<String, JsonElement> entry : textureObj.entrySet()) {
-            String location = entry.getValue().getAsString();
-            mapBuilder.put(entry.getKey(), location);
-        }
-
-        return mapBuilder.build();
-    }
 }
