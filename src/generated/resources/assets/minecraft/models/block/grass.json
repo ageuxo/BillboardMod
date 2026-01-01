@@ -1,0 +1,21 @@
+{
+  "loader": "billboard_models:billboard",
+  "sprites": [
+    {
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "1",
+      "tintindex": 0
+    }
+  ],
+  "textures": {
+    "1": "minecraft:block/grass",
+    "particle": "minecraft:block/grass"
+  }
+}

@@ -22,6 +22,11 @@ public class ModelProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+
+        replaceSimpleTinted("minecraft:grass", vanillaRL("block/grass"));
+        replaceSimpleTinted("minecraft:fern", vanillaRL("block/fern"));
+
+
         replaceDoubleTall(Blocks.TALL_GRASS,
                 doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass")),
                 "tall_grass",
@@ -69,6 +74,13 @@ public class ModelProvider extends BlockStateProvider {
                 vanillaRL("block/sunflower_bottom")
         );
 
+    }
+
+    private void replaceSimpleTinted(String location, @NotNull ResourceLocation texture) {
+        billboard(location)
+                .addParticleTexture(texture)
+                .addTintedSprite(texture, 0, 0.5f, 0.5f, 0f, 0f)
+                .end();
     }
 
     private static @NotNull ResourceLocation vanillaRL(String path) {
