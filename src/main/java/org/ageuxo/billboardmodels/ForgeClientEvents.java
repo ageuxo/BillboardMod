@@ -27,7 +27,7 @@ public class ForgeClientEvents {
 
     @SubscribeEvent
     public static void renderLevel(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS) {
             ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum = ((LevelRendererAccessor) event.getLevelRenderer()).getRenderChunksInFrustum();
             Minecraft minecraft = Minecraft.getInstance();
             ClientLevel level = minecraft.level;
