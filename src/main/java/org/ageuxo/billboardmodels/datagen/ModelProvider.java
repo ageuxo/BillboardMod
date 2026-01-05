@@ -22,14 +22,17 @@ public class ModelProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
 
-        billboard("minecraft:grass")
-                .addParticleTexture(vanillaRL("block/grass"))
-                .addTintedSprite(vanillaRL("block/grass"), 0, 0.5f, 0.5f, 0f, 0f)
-                .end();
-        billboard("minecraft:fern")
-                .addParticleTexture(vanillaRL("block/fern"))
-                .addTintedSprite(vanillaRL("block/fern"), 0, 0.5f, 0.5f, 0f, 0f)
-                .end();
+        replace(Blocks.GRASS,
+                billboard("grass")
+                        .addTintedSprite(vanillaRL("block/grass"), 0, 0.5f, 0.5f, 0f, 0f)
+                        .addParticleTexture(vanillaRL("block/grass"))
+        );
+
+        replace(Blocks.FERN,
+                billboard("fern")
+                        .addTintedSprite(vanillaRL("block/fern"), 0, 0.5f, 0.5f, 0f, 0f)
+                        .addParticleTexture(vanillaRL("block/fern"))
+        );
 
         replaceDoubleTall(Blocks.TALL_GRASS,
                 doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass"))
@@ -125,6 +128,14 @@ public class ModelProvider extends BlockStateProvider {
                             )
                             .build();
                 });
+    }
+
+    private void replace(Block block, BillboardBuilder builder) {
+        getVariantBuilder(block)
+                .forAllStates(state -> ConfiguredModel.builder()
+                        .modelFile(builder.end())
+                        .build()
+                );
     }
 
     private BillboardBuilder billboard(String location) {
