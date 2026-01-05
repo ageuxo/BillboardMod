@@ -10,6 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.ModelData;
+import org.ageuxo.billboardmodels.data.BillboardTransform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -27,8 +28,9 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
     private final boolean usesBlockLight;
     private final boolean isGui3d;
     private final ItemTransforms transforms;
+    private final BillboardTransform transform;
 
-    public BillboardSpriteModel(List<BakedSprite> bakedSprites, TextureAtlasSprite particle, ItemOverrides overrides, boolean hasAmbientOcclusion, boolean usesBlockLight, boolean isGui3d, ItemTransforms transforms) {
+    public BillboardSpriteModel(List<BakedSprite> bakedSprites, TextureAtlasSprite particle, ItemOverrides overrides, boolean hasAmbientOcclusion, boolean usesBlockLight, boolean isGui3d, ItemTransforms transforms, BillboardTransform transform) {
         this.bakedSprites = bakedSprites;
         this.particle = particle;
         this.overrides = overrides;
@@ -36,10 +38,11 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
         this.usesBlockLight = usesBlockLight;
         this.isGui3d = isGui3d;
         this.transforms = transforms;
+        this.transform = transform;
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
         return List.of();
     }
 
@@ -79,8 +82,12 @@ public class BillboardSpriteModel implements IDynamicBakedModel {
         return transforms;
     }
 
-    public List<BakedSprite> bakedSprites() {
+    public @NotNull List<BakedSprite> bakedSprites() {
         return bakedSprites;
+    }
+
+    public @NotNull BillboardTransform transform() {
+        return transform;
     }
 
     public static final class BakedSprite {

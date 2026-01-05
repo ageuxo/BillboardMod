@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.ageuxo.billboardmodels.data.BillboardPlacement;
 import org.ageuxo.billboardmodels.data.IBillboardRenderStore;
 import org.ageuxo.billboardmodels.datagen.Tags;
-import org.ageuxo.billboardmodels.model.BillboardRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -23,10 +22,8 @@ public abstract class MixinChunkRenderDispatcherRebuildTask {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0))
     public BlockState compileAddBillboard(RenderChunkRegion instance, BlockPos pos, Operation<BlockState> original, @Local ChunkRenderDispatcher.RenderChunk.RebuildTask.CompileResults compileResults) {
         BlockState state = original.call(instance, pos);
-        if (state.is(Tags.BlockTags.BILLBOARD_SIMPLE)) {
-            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.CAMERA_RELATIVE));
-        } else if (state.is(Tags.BlockTags.BILLBOARD_Y_UP)) {
-            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state, BillboardRenderer.Y_AXIS_ALIGNED));
+        if (state.is(Tags.BlockTags.BILLBOARDS)) {
+            ((IBillboardRenderStore) compileResults).addBillboardRender(new BillboardPlacement(pos.immutable(), state));
         }
         return state;
     }

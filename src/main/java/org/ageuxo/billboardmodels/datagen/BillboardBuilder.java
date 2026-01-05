@@ -23,6 +23,7 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
     public static final Logger LOGGER = LogUtils.getLogger();
     private final List<SpriteGeometry.Sprite> sprites = new ArrayList<>();
     private final Map<String, String> textures = new HashMap<>();
+    private ResourceLocation transform;
 
     public BillboardBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
         super(BillboardMod.modRL("billboard"), parent, existingFileHelper);

@@ -14,13 +14,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
+import org.ageuxo.billboardmodels.data.BillboardTransforms;
 import org.joml.Vector2f;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public record SpriteGeometry(List<Sprite> sprites, Map<String, String> textures) implements IUnbakedGeometry<SpriteGeometry> {
+public record SpriteGeometry(List<Sprite> sprites, Map<String, String> textures, ResourceLocation billboardTransform) implements IUnbakedGeometry<SpriteGeometry> {
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
@@ -41,7 +42,7 @@ public record SpriteGeometry(List<Sprite> sprites, Map<String, String> textures)
                         )
                 ).toList();
 
-        return new BillboardSpriteModel(bakedSprites, particle, overrides, context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(), ItemTransforms.NO_TRANSFORMS);
+        return new BillboardSpriteModel(bakedSprites, particle, overrides, context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(), ItemTransforms.NO_TRANSFORMS, BillboardTransforms.TRANSFORMS.get(billboardTransform));
     }
 
     public record Sprite(String texture, Vector2f origin, Vector2f offset, int tintIndex) {
