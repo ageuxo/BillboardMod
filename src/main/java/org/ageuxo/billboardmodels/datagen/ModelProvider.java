@@ -6,12 +6,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.ageuxo.billboardmodels.BillboardMod;
+import org.ageuxo.billboardmodels.data.BillboardTransforms;
 import org.jetbrains.annotations.NotNull;
 
 public class ModelProvider extends BlockStateProvider {
@@ -23,42 +22,53 @@ public class ModelProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
 
-        replaceSimpleTinted("minecraft:grass", vanillaRL("block/grass"));
-        replaceSimpleTinted("minecraft:fern", vanillaRL("block/fern"));
-
+        billboard("minecraft:grass")
+                .addParticleTexture(vanillaRL("block/grass"))
+                .addTintedSprite(vanillaRL("block/grass"), 0, 0.5f, 0.5f, 0f, 0f)
+                .end();
+        billboard("minecraft:fern")
+                .addParticleTexture(vanillaRL("block/fern"))
+                .addTintedSprite(vanillaRL("block/fern"), 0, 0.5f, 0.5f, 0f, 0f)
+                .end();
 
         replaceDoubleTall(Blocks.TALL_GRASS,
-                doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass")),
+                doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "tall_grass",
                 vanillaRL("block/tall_grass_bottom")
         );
         
         replaceDoubleTall(Blocks.LARGE_FERN,
-                doubleTallTintedBillboard("large_fern", vanillaRL("block/large_fern")),
+                doubleTallTintedBillboard("large_fern", vanillaRL("block/large_fern"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "large_fern",
                 vanillaRL("block/large_fern_bottom")
         );
 
         replaceDoubleTall(Blocks.ROSE_BUSH,
-                doubleTallBillboard("rose_bush", vanillaRL("block/rose_bush_top"), vanillaRL("block/rose_bush_bottom")),
+                doubleTallBillboard("rose_bush", vanillaRL("block/rose_bush_top"), vanillaRL("block/rose_bush_bottom"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "rose_bush",
                 vanillaRL("block/rose_bush_bottom")
         );
 
         replaceDoubleTall(Blocks.LILAC,
-                doubleTallBillboard("lilac", vanillaRL("block/lilac_top"), vanillaRL("block/lilac_bottom")),
+                doubleTallBillboard("lilac", vanillaRL("block/lilac_top"), vanillaRL("block/lilac_bottom"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "lilac",
                 vanillaRL("block/lilac_bottom")
         );
 
         replaceDoubleTall(Blocks.PEONY,
-                doubleTallBillboard("peony", vanillaRL("block/peony_top"), vanillaRL("block/peony_bottom")),
+                doubleTallBillboard("peony", vanillaRL("block/peony_top"), vanillaRL("block/peony_bottom"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "peony",
                 vanillaRL("block/peony_bottom")
         );
 
         replaceDoubleTall(Blocks.PITCHER_PLANT,
-                doubleTallBillboard("pitcher_plant", vanillaRL("block/pitcher_crop_top_stage_4"), vanillaRL("block/pitcher_crop_bottom_stage_4")),
+                doubleTallBillboard("pitcher_plant", vanillaRL("block/pitcher_crop_top_stage_4"), vanillaRL("block/pitcher_crop_bottom_stage_4"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "pitcher_plant",
                 vanillaRL("block/pitcher_crop_bottom_stage_4")
         );
@@ -69,50 +79,41 @@ public class ModelProvider extends BlockStateProvider {
                         .addSprite(vanillaRL("block/sunflower_front"), 0.5f, 0.5f, 0f, 1f)
                         .addSprite(vanillaRL("block/sunflower_bottom"), 0.5f, 0.5f, 0f, 0f)
                         .addParticleTexture(vanillaRL("block/sunflower_bottom"))
-                        .end(),
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "sunflower",
                 vanillaRL("block/sunflower_bottom")
         );
 
     }
 
-    private void replaceSimpleTinted(String location, @NotNull ResourceLocation texture) {
-        billboard(location)
-                .addParticleTexture(texture)
-                .addTintedSprite(texture, 0, 0.5f, 0.5f, 0f, 0f)
-                .end();
-    }
-
     private static @NotNull ResourceLocation vanillaRL(String path) {
         return new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, path);
     }
 
-    private BlockModelBuilder doubleTallTintedBillboard(String billboardLocation, ResourceLocation unprefixedTexture) {
+    private BillboardBuilder doubleTallTintedBillboard(String billboardLocation, ResourceLocation unprefixedTexture) {
         return doubleTallTintedBillboard(billboardLocation, unprefixedTexture.withSuffix("_top"), unprefixedTexture.withSuffix("_bottom"));
     }
 
-    private BlockModelBuilder doubleTallTintedBillboard(String billboardLocation, ResourceLocation textureTop, ResourceLocation textureBottom) {
+    private BillboardBuilder doubleTallTintedBillboard(String billboardLocation, ResourceLocation textureTop, ResourceLocation textureBottom) {
         return billboard(billboardLocation)
                 .addTintedSprite(textureTop, 0, 0.5f, 0.5f, 0f, 1f)
                 .addTintedSprite(textureBottom, 0, 0.5f, 0.5f, 0f, 0f)
-                .addParticleTexture(textureBottom)
-                .end();
+                .addParticleTexture(textureBottom);
     }
 
-    private BlockModelBuilder doubleTallBillboard(String billboardLocation, ResourceLocation textureTop, ResourceLocation textureBottom) {
+    private BillboardBuilder doubleTallBillboard(String billboardLocation, ResourceLocation textureTop, ResourceLocation textureBottom) {
         return billboard(billboardLocation)
                 .addSprite(textureTop, 0.5f, 0.5f, 0f, 1f)
                 .addSprite(textureBottom, 0.5f, 0.5f, 0f, 0f)
-                .addParticleTexture(textureBottom)
-                .end();
+                .addParticleTexture(textureBottom);
     }
 
-    private void replaceDoubleTall(Block tallPlant, ModelFile tallGrass, String modelName, ResourceLocation particleTexture) {
+    private void replaceDoubleTall(Block tallPlant, BillboardBuilder builder, String modelName, ResourceLocation particleTexture) {
         getVariantBuilder(tallPlant)
                 .forAllStates(state -> {
                     if (state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER) {
                         return ConfiguredModel.builder()
-                                .modelFile(tallGrass)
+                                .modelFile(builder.end())
                                 .build();
                     }
 

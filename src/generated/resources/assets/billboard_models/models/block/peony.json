@@ -1,4 +1,5 @@
 {
+  "billboard_transform": "billboard_models:y_axis_aligned",
   "loader": "billboard_models:billboard",
   "sprites": [
     {

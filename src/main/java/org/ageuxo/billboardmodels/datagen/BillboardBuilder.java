@@ -91,10 +91,12 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
                 Codec.unboundedMap(Codec.STRING, Codec.STRING).encodeStart(JsonOps.INSTANCE, textures)
                         .getOrThrow(false, LOGGER::error)
         );
-        json.add("billboard_transform",
-                ResourceLocation.CODEC.encodeStart(JsonOps.INSTANCE, transform)
-                        .getOrThrow(false, LOGGER::error)
-                );
+        if (!transform.equals(BillboardTransforms.TRANSFORMS.getLocationOrThrow(BillboardTransforms.CAMERA_RELATIVE))){
+            json.add("billboard_transform",
+                    ResourceLocation.CODEC.encodeStart(JsonOps.INSTANCE, transform)
+                            .getOrThrow(false, LOGGER::error)
+            );
+        }
         return super.toJson(json);
     }
 
