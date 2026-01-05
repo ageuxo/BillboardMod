@@ -43,6 +43,15 @@ public class SimpleRegistry<V> {
         return reversed.get(entry);
     }
 
+    public ResourceLocation getLocationOrThrow(V entry) {
+        var location = getLocation(entry);
+        if (location == null) {
+            throw new IllegalStateException("Attempted to get location of non-registered entry from %s: %s".formatted(this, entry));
+        }
+
+        return location;
+    }
+
     public boolean containsKey(ResourceLocation location) {
         return entries.containsKey(location);
     }
