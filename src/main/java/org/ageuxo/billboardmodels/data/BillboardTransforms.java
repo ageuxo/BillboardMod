@@ -53,6 +53,7 @@ public class BillboardTransforms {
 
         private final ResourceLocation id;
         private final Map<ResourceLocation, V> entries = new HashMap<>();
+        private final Map<V, ResourceLocation> reversed = new HashMap<>();
 
         public SimpleRegistry(ResourceLocation id) {
             this.id = id;
@@ -60,6 +61,7 @@ public class BillboardTransforms {
 
         public V register(ResourceLocation location, V entry) {
             entries.put(Objects.requireNonNull(location, "Location must be non-null"), Objects.requireNonNull(entry, "Entry value must be non-null"));
+            reversed.put(entry, location); // Add to reverse lookup as well
             return entry;
         }
 
@@ -79,6 +81,20 @@ public class BillboardTransforms {
 
             return entry;
         }
+
+        public ResourceLocation getLocation(V entry) {
+            return reversed.get(entry);
+        }
+
+        public boolean containsKey(ResourceLocation location) {
+            return entries.containsKey(location);
+        }
+
+        public boolean containsEntry(V entry) {
+            return entries.containsValue(entry);
+        }
+
+
 
         @Override
         public String toString() {
