@@ -62,7 +62,23 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
     }
 
     public BillboardBuilder setTransform(BillboardTransform transform) {
+        try {
+            this.transform = BillboardTransforms.TRANSFORMS.getLocationOrThrow(transform);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("Set non-registered transform in BillboardBuilder: %s".formatted(e.getMessage()), e);
+        }
 
+        return this;
+    }
+
+    public BillboardBuilder setTransform(ResourceLocation location) {
+        try {
+            BillboardTransforms.TRANSFORMS.getOrThrow(location);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException("Set non-registered transform in BillboardBuilder: %s".formatted(e.getMessage()), e);
+        }
+
+        return this;
     }
 
     @Override
