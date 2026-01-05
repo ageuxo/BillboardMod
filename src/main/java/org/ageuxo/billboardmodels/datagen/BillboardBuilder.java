@@ -91,7 +91,7 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
                 Codec.unboundedMap(Codec.STRING, Codec.STRING).encodeStart(JsonOps.INSTANCE, textures)
                         .getOrThrow(false, LOGGER::error)
         );
-        json.add("transform",
+        json.add("billboard_transform",
                 ResourceLocation.CODEC.encodeStart(JsonOps.INSTANCE, transform)
                         .getOrThrow(false, LOGGER::error)
                 );

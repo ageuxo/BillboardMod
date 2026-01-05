@@ -23,7 +23,7 @@ public class SpriteGeometryLoader implements IGeometryLoader<SpriteGeometry> {
         var spriteResult = SpriteGeometry.Sprite.CODEC.listOf().parse(JsonOps.INSTANCE, jsonObject.get("sprites"));
         List<SpriteGeometry.Sprite> sprites = spriteResult.resultOrPartial(s ->LOGGER.warn("SpriteGeometryLoader failed parsing sprites: {}", s))
                 .orElseThrow( ()-> new JsonParseException("SpriteGeometryLoader failed parsing sprites") );
-        var transformResult = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, jsonObject.get("transform")).result();
+        var transformResult = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, jsonObject.get("billboard_transform")).result();
         ResourceLocation transformLocation = transformResult.orElseGet( ()-> BillboardMod.modRL("camera_relative") );
 
         return new SpriteGeometry(sprites, textures, transformLocation);
