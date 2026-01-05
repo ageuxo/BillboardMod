@@ -1,9 +1,9 @@
 package org.ageuxo.billboardmodels.data;
 
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Axis;
 import org.ageuxo.billboardmodels.BillboardMod;
 import org.ageuxo.billboardmodels.util.SimpleRegistry;
+import org.ageuxo.billboardmodels.util.Utils;
 import org.joml.Quaternionf;
 
 public class BillboardTransforms {
@@ -31,7 +31,8 @@ public class BillboardTransforms {
 
     public static final BillboardTransform Y_AXIS_ALIGNED = builtIn("y_axis_aligned",
             (poseStack, camera) -> {
-                poseStack.mulPose(Axis.YP.rotationDegrees(camera.getYRot()));
+                Utils.extractYaw(camera.rotation(), ROT_HOLDER);
+                poseStack.mulPose(ROT_HOLDER);
             }
     );
 
