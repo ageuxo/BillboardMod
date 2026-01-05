@@ -9,6 +9,8 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.ageuxo.billboardmodels.BillboardMod;
+import org.ageuxo.billboardmodels.data.BillboardTransform;
+import org.ageuxo.billboardmodels.data.BillboardTransforms;
 import org.ageuxo.billboardmodels.model.SpriteGeometry;
 import org.joml.Vector2f;
 import org.slf4j.Logger;
@@ -23,7 +25,7 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
     public static final Logger LOGGER = LogUtils.getLogger();
     private final List<SpriteGeometry.Sprite> sprites = new ArrayList<>();
     private final Map<String, String> textures = new HashMap<>();
-    private ResourceLocation transform;
+    private ResourceLocation transform = BillboardMod.modRL("camera_relative"); // Default to camera relative transform
 
     public BillboardBuilder(BlockModelBuilder parent, ExistingFileHelper existingFileHelper) {
         super(BillboardMod.modRL("billboard"), parent, existingFileHelper);
@@ -57,6 +59,10 @@ public class BillboardBuilder extends CustomLoaderBuilder<BlockModelBuilder> {
         textures.put("particle", particle.toString());
 
         return this;
+    }
+
+    public BillboardBuilder setTransform(BillboardTransform transform) {
+
     }
 
     @Override
