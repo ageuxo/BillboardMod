@@ -1,0 +1,33 @@
+{
+  "billboard_transform": "billboard_models:y_axis_aligned",
+  "loader": "billboard_models:billboard",
+  "sprites": [
+    {
+      "offset": [
+        0.0,
+        1.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "0"
+    },
+    {
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "1"
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/tall_seagrass_top",
+    "1": "minecraft:block/tall_seagrass_bottom",
+    "particle": "minecraft:block/tall_seagrass_bottom"
+  }
+}

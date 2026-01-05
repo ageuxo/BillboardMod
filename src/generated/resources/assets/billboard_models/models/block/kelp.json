@@ -1,0 +1,21 @@
+{
+  "billboard_transform": "billboard_models:y_axis_aligned",
+  "loader": "billboard_models:billboard",
+  "sprites": [
+    {
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "texture": "0"
+    }
+  ],
+  "textures": {
+    "0": "minecraft:block/kelp",
+    "particle": "minecraft:block/kelp"
+  }
+}

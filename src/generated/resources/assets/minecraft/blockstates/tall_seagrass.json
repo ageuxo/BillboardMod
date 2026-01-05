@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "billboard_models:block/tall_seagrass"
+    },
+    "half=upper": {
+      "model": "billboard_models:block/tall_seagrass_top"
+    }
+  }
+}

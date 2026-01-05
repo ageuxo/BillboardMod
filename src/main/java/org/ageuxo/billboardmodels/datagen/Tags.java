@@ -22,14 +22,6 @@ public class Tags {
          * Blocks that shouldn't render normally
          */
         public static final TagKey<Block> BILLBOARDS = new TagKey<>(Registries.BLOCK, BillboardMod.modRL("billboards"));
-        /**
-         * Blocks that render as a camera relative billboard
-         */
-        public static final TagKey<Block> BILLBOARD_SIMPLE = new TagKey<>(Registries.BLOCK, BillboardMod.modRL("billboard_simple"));
-        /**
-         * Blocks that render as a camera relative billboard with the Y axis locked into straight up
-         */
-        public static final TagKey<Block> BILLBOARD_Y_UP = new TagKey<>(Registries.BLOCK, BillboardMod.modRL("billboard_y_up"));
 
         public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
             super(output, lookupProvider, BillboardMod.MODID, existingFileHelper);
@@ -37,7 +29,7 @@ public class Tags {
 
         @Override
         protected void addTags(HolderLookup.@NotNull Provider provider) {
-            tag(BILLBOARD_SIMPLE)
+            tag(BILLBOARDS)
                     .addTag(net.minecraft.tags.BlockTags.SMALL_FLOWERS)
                     // PLANTS
                     .add(Blocks.DEAD_BUSH)
@@ -59,20 +51,14 @@ public class Tags {
                     .add(Blocks.DARK_OAK_SAPLING)
                     .add(Blocks.ACACIA_SAPLING)
                     .add(Blocks.CHERRY_SAPLING)
-                    .add(Blocks.BAMBOO_SAPLING);
-
-            tag(BILLBOARD_Y_UP)
+                    .add(Blocks.BAMBOO_SAPLING)
+                    // TWO TALL
                     .addTag(net.minecraft.tags.BlockTags.TALL_FLOWERS)
-                    .add(Blocks.BUBBLE_COLUMN)
                     .add(Blocks.KELP)
                     .add(Blocks.KELP_PLANT)
                     .add(Blocks.LARGE_FERN)
                     .add(Blocks.TALL_GRASS)
                     .add(Blocks.TALL_SEAGRASS);
-
-            tag(BILLBOARDS)
-                    .addTag(BILLBOARD_SIMPLE)
-                    .addTag(BILLBOARD_Y_UP);
         }
     }
 }

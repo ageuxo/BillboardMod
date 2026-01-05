@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "billboard_models:block/kelp_plant"
+    }
+  }
+}

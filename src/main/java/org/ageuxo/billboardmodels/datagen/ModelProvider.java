@@ -34,6 +34,27 @@ public class ModelProvider extends BlockStateProvider {
                         .addParticleTexture(vanillaRL("block/fern"))
         );
 
+        replace(Blocks.KELP,
+                billboard("kelp")
+                        .addSprite(vanillaRL("block/kelp"), 0.5f, 0.5f, 0f ,0f)
+                        .addParticleTexture(vanillaRL("block/kelp"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED)
+        );
+
+        replace(Blocks.KELP_PLANT,
+                billboard("kelp_plant")
+                        .addSprite(vanillaRL("block/kelp_plant"), 0.5f, 0.5f, 0f ,0f)
+                        .addParticleTexture(vanillaRL("block/kelp_plant"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED)
+        );
+
+        replaceDoubleTall(Blocks.TALL_SEAGRASS,
+                doubleTallBillboard("tall_seagrass", vanillaRL("block/tall_seagrass"))
+                        .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
+                "tall_seagrass",
+                vanillaRL("block/tall_seagrass")
+        );
+
         replaceDoubleTall(Blocks.TALL_GRASS,
                 doubleTallTintedBillboard("tall_grass", vanillaRL("block/tall_grass"))
                         .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
@@ -49,21 +70,21 @@ public class ModelProvider extends BlockStateProvider {
         );
 
         replaceDoubleTall(Blocks.ROSE_BUSH,
-                doubleTallBillboard("rose_bush", vanillaRL("block/rose_bush_top"), vanillaRL("block/rose_bush_bottom"))
+                doubleTallBillboard("rose_bush", vanillaRL("block/rose_bush"))
                         .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "rose_bush",
                 vanillaRL("block/rose_bush_bottom")
         );
 
         replaceDoubleTall(Blocks.LILAC,
-                doubleTallBillboard("lilac", vanillaRL("block/lilac_top"), vanillaRL("block/lilac_bottom"))
+                doubleTallBillboard("lilac", vanillaRL("block/lilac"))
                         .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "lilac",
                 vanillaRL("block/lilac_bottom")
         );
 
         replaceDoubleTall(Blocks.PEONY,
-                doubleTallBillboard("peony", vanillaRL("block/peony_top"), vanillaRL("block/peony_bottom"))
+                doubleTallBillboard("peony", vanillaRL("block/peony"))
                         .setTransform(BillboardTransforms.Y_AXIS_ALIGNED),
                 "peony",
                 vanillaRL("block/peony_bottom")
@@ -102,6 +123,10 @@ public class ModelProvider extends BlockStateProvider {
                 .addTintedSprite(textureTop, 0, 0.5f, 0.5f, 0f, 1f)
                 .addTintedSprite(textureBottom, 0, 0.5f, 0.5f, 0f, 0f)
                 .addParticleTexture(textureBottom);
+    }
+
+    private BillboardBuilder doubleTallBillboard(String billboardLocation, ResourceLocation unsuffixedTexture) {
+        return doubleTallBillboard(billboardLocation, unsuffixedTexture.withSuffix("_top"), unsuffixedTexture.withSuffix("_bottom"));
     }
 
     private BillboardBuilder doubleTallBillboard(String billboardLocation, ResourceLocation textureTop, ResourceLocation textureBottom) {
