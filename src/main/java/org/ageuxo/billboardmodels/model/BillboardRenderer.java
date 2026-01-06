@@ -87,10 +87,10 @@ public class BillboardRenderer implements PreparableReloadListener {
     }
 
     public static void renderSprite(VertexConsumer buf, PoseStack poseStack, TextureAtlasSprite sprite, int packedLight, int packOverlay, int red, int green, int blue) {
-        addVert(poseStack.last(), buf, -0.5f, 0.5f, 0, sprite.getU0(), sprite.getV0(), packedLight, packOverlay, red, green, blue);
-        addVert(poseStack.last(), buf, 0.5f, 0.5f, 0, sprite.getU1(), sprite.getV0(), packedLight, packOverlay, red, green, blue);
-        addVert(poseStack.last(), buf, 0.5f, -0.5f, 0, sprite.getU1(), sprite.getV1(), packedLight, packOverlay, red, green, blue);
-        addVert(poseStack.last(), buf, -0.5f, -0.5f, 0, sprite.getU0(), sprite.getV1(), packedLight, packOverlay, red, green, blue);
+        addVert(poseStack.last(), buf, -0.5f, 0.5f, 0, sprite.getU1(), sprite.getV0(), packedLight, packOverlay, red, green, blue);
+        addVert(poseStack.last(), buf, 0.5f, 0.5f, 0, sprite.getU0(), sprite.getV0(), packedLight, packOverlay, red, green, blue);
+        addVert(poseStack.last(), buf, 0.5f, -0.5f, 0, sprite.getU0(), sprite.getV1(), packedLight, packOverlay, red, green, blue);
+        addVert(poseStack.last(), buf, -0.5f, -0.5f, 0, sprite.getU1(), sprite.getV1(), packedLight, packOverlay, red, green, blue);
     }
 
     private static void addVert(PoseStack.Pose pose, VertexConsumer buf, float x, float y, int z, float u, float v, int packedLight, int packOverlay, int red, int green, int blue) {
